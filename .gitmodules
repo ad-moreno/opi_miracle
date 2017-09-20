@@ -1,6 +1,7 @@
 [submodule "buildroot"]
 	path = buildroot
 	url = git@github.com:adnio/buildroot.git
+	branch = 2017.08.x
 [submodule "miraclecast"]
 	path = miraclecast
 	url = https://github.com/albfan/miraclecast.git
