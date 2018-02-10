@@ -1,0 +1,48 @@
+diff -ruN rtl8189fs_orig/rtl8189fs.mk buildroot/package/rtl8189fs/rtl8189fs.mk
+--- rtl8189fs_orig/rtl8189fs.mk	2018-02-09 11:12:06.682949137 -0500
++++ buildroot/package/rtl8189fs/rtl8189fs.mk	2018-02-09 11:23:07.446951492 -0500
+@@ -12,6 +12,10 @@
+ 	CONFIG_RTL8189FS=m \
+ 	KVER=$(LINUX_VERSION_PROBED) \
+ 	KSRC=$(LINUX_DIR)
++	
++RTL8189FS_INSTALL_INIT_SYSV = \
++	$(INSTALL) -D -m 0755 package/rtl8189fs/S02-rtl8189fs \
++		$(TARGET_DIR)/etc/init.d/S02-rtl8189fs
+ 
+ $(eval $(kernel-module))
+ $(eval $(generic-package))
+diff -ruN rtl8189fs_orig/S02-rtl8189fs buildroot/package/rtl8189fs/S02-rtl8189fs
+--- rtl8189fs_orig/S02-rtl8189fs	1969-12-31 19:00:00.000000000 -0500
++++ buildroot/package/rtl8189fs/S02-rtl8189fs	2018-02-09 12:06:57.442960864 -0500
+@@ -0,0 +1,30 @@
++#!/bin/sh
++
++set -e
++
++case "$1" in
++	start|"")
++		echo "Loading 8189fs module"
++		modprobe 8189fs
++		;;
++
++	stop)
++		echo "Unloading 8189fs module"
++		for wlan_if in /sys/bus/sdio/drivers/rtl8189fs/*/net/*/
++		do
++			ifconfig $(echo $wlan_if | cut -d"/" -f9) down
++		done
++		rmmod 8189fs
++		;;
++
++	restart|force-reload)
++		$0 stop
++		sleep 1
++		$0 start
++		;;
++
++	*)
++		echo "Usage: 8189fs {start|stop|restart|force-reload}"
++		exit 1
++		;;
++esac

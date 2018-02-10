@@ -2,9 +2,6 @@
 	path = buildroot
 	url = git@github.com:adnio/buildroot.git
 	branch = 2017.08.x
-[submodule "miraclecast"]
-	path = miraclecast
-	url = https://github.com/albfan/miraclecast.git
 [submodule "build"]
 	path = build
 	url = https://github.com/armbian/build.git
