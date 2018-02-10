@@ -1,4 +1,4 @@
 [submodule "buildroot"]
 	path = buildroot
-	url = git@github.com:adnio/buildroot.git
-	branch = 2017.08.x
+	url = https://github.com/buildroot/buildroot.git
+	branch = master 
